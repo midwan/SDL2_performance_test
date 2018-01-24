@@ -1,0 +1,1 @@
+g++ `sdl2-config --cflags --libs` -lSDL2_image SDL2_performance_test.cpp -o SDL2_performance_test
