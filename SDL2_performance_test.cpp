@@ -3,8 +3,8 @@
 #include <stdbool.h>
 #include <sys/time.h>
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+#include <SDL.h>
+#include <SDL_image.h>
 
 SDL_Window* window = NULL;
 SDL_Renderer *renderer;
