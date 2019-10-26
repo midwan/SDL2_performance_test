@@ -3,8 +3,8 @@
 #include <stdbool.h>
 #include <sys/time.h>
 
-#include <SDL.h>
-#include <SDL_image.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
 SDL_Window* window = NULL;
 SDL_Renderer *renderer;
@@ -34,7 +34,6 @@ int main(int argc, char** argv)
 
 	if( window )
 	{
-
 		renderer = SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED); 
 
 		if ( renderer )
@@ -144,9 +143,7 @@ SDL_Texture *WID_loadTexture( SDL_Renderer *renderer, char *name)
 	}
 	else
 	{
-
 		texture = SDL_CreateTextureFromSurface( renderer, surface );
-
 		SDL_FreeSurface( surface );
 	}
 
