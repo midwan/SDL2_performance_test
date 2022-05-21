@@ -49,6 +49,7 @@ jobs:
       with:
         allowUpdates: true
         generateReleaseNotes: true
+        omitBodyDuringUpdate: true
         artifacts: |
           sdl2_tests-${{ needs.git-tag.outputs.tag_name }}.zip
     
