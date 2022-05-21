@@ -41,5 +41,5 @@ jobs:
         generateReleaseNotes: true
         artifacts: |
           sdl2_pixelformat_test
-          sdl2_pixelformat_test
+          sdl2_renderer_test
     
