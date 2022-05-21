@@ -38,7 +38,6 @@ jobs:
       if: github.ref_type == 'tag'
       with:
         allowUpdates: true
-        generateReleaseNotes: true
         artifacts: |
           sdl2_pixelformat_test
           sdl2_renderer_test
