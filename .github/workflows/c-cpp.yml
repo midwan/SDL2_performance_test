@@ -1,0 +1,38 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ master ]
+    tags:
+      - v*.*
+  pull_request:
+    branches: [ master ]
+  
+jobs:
+  build:
+    runs-on: [self-hosted, Linux]
+    steps:
+    - uses: actions/checkout@v3
+    - name: configure
+      run: ./compile.sh
+    - uses: actions/upload-artifact@v3
+      with:
+        name: sdl2_renderer_test
+        path: sdl2_renderer_test
+    - uses: actions/upload-artifact@v3
+      with:
+        name: sdl2_pixelformat_test
+        path: sdl2_pixelformat_test
+  
+  deploy:
+    if: github.ref_type == 'tag'
+    runs-on: [self-hosted, Linux]
+    steps:
+    - uses: actions/download-artifact@v3.0.0
+      with:
+        name: sdl2_renderer_test
+        path: ~/projects
+    - uses: actions/download-artifact@v3.0.0
+      with:
+        name: sdl2_pixelformat_test
+        path: ~/projects
