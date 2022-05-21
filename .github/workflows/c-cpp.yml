@@ -43,6 +43,11 @@ jobs:
       if: github.ref_type == 'tag'
       run: zip sdl2_tests-${{ needs.git-tag.outputs.tag_name }}.zip sdl2_pixelformat_test sdl2_renderer_test
 
+    - name: Create changelog text
+      if: github.ref_type == 'tag'
+      id: changelog
+      uses: loopwerk/tag-changelog@v1
+
     - name: Release
       if: github.ref_type == 'tag'
       uses: ncipollo/release-action@v1
@@ -50,6 +55,7 @@ jobs:
         allowUpdates: true
         generateReleaseNotes: true
         omitBodyDuringUpdate: true
+        body: ${{ steps.changelog.outputs.changes }}
         artifacts: |
           sdl2_tests-${{ needs.git-tag.outputs.tag_name }}.zip
     
