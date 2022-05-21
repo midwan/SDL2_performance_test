@@ -13,9 +13,10 @@ jobs:
     runs-on: [self-hosted, Linux]
     steps:
     - uses: actions/checkout@v3
-    - name: configure
+    - name: Build
       run: ./compile.sh
-    - uses: actions/upload-artifact@v3
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v3
       with:
         name: sdl2_renderer_test
         path: sdl2_renderer_test
@@ -23,12 +24,8 @@ jobs:
       with:
         name: sdl2_pixelformat_test
         path: sdl2_pixelformat_test
-  
-  deploy:
-    if: github.ref_type == 'tag'
-    runs-on: [self-hosted, Linux]
-    steps:
-    - uses: actions/download-artifact@v3.0.0
+    - name: Deploy
+      uses: actions/download-artifact@v3.0.0
       with:
         name: sdl2_renderer_test
         path: ~/projects
@@ -36,3 +33,13 @@ jobs:
       with:
         name: sdl2_pixelformat_test
         path: ~/projects
+    - name: Release
+      uses: ncipollo/release-action@v1
+      if: github.ref_type == 'tag'
+      with:
+        allowUpdates: true
+        generateReleaseNotes: true
+        artifacts: |
+          sdl2_pixelformat_test
+          sdl2_pixelformat_test
+    
