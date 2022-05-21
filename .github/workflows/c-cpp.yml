@@ -9,12 +9,27 @@ on:
     branches: [ master ]
   
 jobs:
+  git-tag:
+    runs-on: [self-hosted]
+    outputs:
+      tag_name: ${{ steps.vars.outputs.TAG_NAME }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: 'true'
+      - name: Set output
+        id: vars
+        run: echo ::set-output name=TAG_NAME::$(git describe)
+
   build:
+    needs: git-tag
     runs-on: [self-hosted, Linux]
     steps:
     - uses: actions/checkout@v3
     - name: Build
       run: ./compile.sh
+
     - name: Upload Artifacts
       uses: actions/upload-artifact@v3
       with:
@@ -24,21 +39,14 @@ jobs:
       with:
         name: sdl2_pixelformat_test
         path: sdl2_pixelformat_test
-    - name: Deploy
-      uses: actions/download-artifact@v3.0.0
-      with:
-        name: sdl2_renderer_test
-        path: ~/projects
-    - uses: actions/download-artifact@v3.0.0
-      with:
-        name: sdl2_pixelformat_test
-        path: ~/projects
-    - name: Release
-      uses: ncipollo/release-action@v1
+    - name: ZIP binaries
       if: github.ref_type == 'tag'
+      run: zip sdl2_tests-${{ needs.git-tag.outputs.tag_name }}.zip sdl2_pixelformat_test sdl2_renderer_test
+    - name: Release
+      if: github.ref_type == 'tag'
+      uses: ncipollo/release-action@v1
       with:
         allowUpdates: true
         artifacts: |
-          sdl2_pixelformat_test
-          sdl2_renderer_test
+          sdl2_tests-${{ needs.git-tag.outputs.tag_name }}.zip
     
