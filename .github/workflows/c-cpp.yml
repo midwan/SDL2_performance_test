@@ -55,7 +55,6 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         allowUpdates: true
-        generateReleaseNotes: true
         omitBodyDuringUpdate: true
         body: ${{ steps.changelog.outputs.changes }}
         artifacts: |
