@@ -3,8 +3,8 @@
 #include <stdbool.h>
 #include <sys/time.h>
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+#include <SDL.h>
+#include <SDL_image.h>
 
 SDL_Window* window = NULL;
 SDL_Renderer *renderer;
@@ -67,28 +67,28 @@ int main(int argc, char** argv)
 			t1 = getTimeStamp();
 			SDL_RenderCopy(renderer, texture, NULL, &clip);
 			t2 = getTimeStamp();
-			printf("RenderCopy 200x100 : %ld\n", (t2-t1));
+			printf("RenderCopy 200x100 : %d\n", (t2-t1));
 
 			usleep(20000);
 			
 			t1 = getTimeStamp();
 			SDL_RenderPresent(renderer);
 			t2 = getTimeStamp();
-			printf("RenderPresent : %ld\n", (t2 - t1));
+			printf("RenderPresent : %d\n", (t2 - t1));
 
 			usleep(20000);
 			
 			t1 = getTimeStamp();
 			SDL_RenderCopy(renderer, texture, NULL, NULL);
 			t2 = getTimeStamp();
-			printf("RenderCopy 800x600 : %ld\n", (t2-t1));
+			printf("RenderCopy 800x600 : %d\n", (t2-t1));
 
 			usleep(20000);
 			
 			t1 = getTimeStamp();
 			SDL_RenderPresent(renderer);
 			t2 = getTimeStamp();
-			printf("RenderPresent : %ld\n", (t2 - t1));
+			printf("RenderPresent : %d\n", (t2 - t1));
 
 			bool loop = true;
 			while ( loop )
