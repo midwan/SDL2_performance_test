@@ -9,21 +9,7 @@ on:
     branches: [ master ]
   
 jobs:
-  git-tag:
-    runs-on: [self-hosted]
-    outputs:
-      tag_name: ${{ steps.vars.outputs.TAG_NAME }}
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          submodules: 'true'
-      - name: Set output
-        id: vars
-        run: echo ::set-output name=TAG_NAME::$(git describe --abbrev=0)
-
   build:
-    needs: git-tag
     runs-on: [self-hosted, Linux]
     steps:
     - uses: actions/checkout@v3
@@ -39,9 +25,18 @@ jobs:
       with:
         name: sdl2_pixelformat_test
         path: sdl2_pixelformat_test
+
+    - name: Get tag
+      if: github.ref_type == 'tag'
+      id: tag
+      uses: dawidd6/action-get-tag@v1
+      with:
+        # Optionally strip `v` prefix
+        strip_v: false
+
     - name: ZIP binaries
       if: github.ref_type == 'tag'
-      run: zip sdl2_tests-${{ needs.git-tag.outputs.tag_name }}.zip sdl2_pixelformat_test sdl2_renderer_test
+      run: zip sdl2_tests-${{ steps.tag.outputs.tag }}.zip sdl2_pixelformat_test sdl2_renderer_test
 
     - name: Create changelog text
       if: github.ref_type == 'tag'
@@ -59,5 +54,5 @@ jobs:
         omitBodyDuringUpdate: true
         body: ${{ steps.changelog.outputs.changes }}
         artifacts: |
-          sdl2_tests-${{ needs.git-tag.outputs.tag_name }}.zip
+          sdl2_tests-${{ steps.tag.outputs.tag }}.zip
     
