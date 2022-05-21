@@ -20,7 +20,7 @@ jobs:
           submodules: 'true'
       - name: Set output
         id: vars
-        run: echo ::set-output name=TAG_NAME::$(git describe)
+        run: echo ::set-output name=TAG_NAME::$(git describe --abbrev=0)
 
   build:
     needs: git-tag
@@ -42,21 +42,13 @@ jobs:
     - name: ZIP binaries
       if: github.ref_type == 'tag'
       run: zip sdl2_tests-${{ needs.git-tag.outputs.tag_name }}.zip sdl2_pixelformat_test sdl2_renderer_test
-    
+
     - name: Release
-      uses: softprops/action-gh-release@v1
       if: github.ref_type == 'tag'
+      uses: ncipollo/release-action@v1
       with:
-        generate_release_notes: true
-        files: |
+        allowUpdates: true
+        generateReleaseNotes: true
+        artifacts: |
           sdl2_tests-${{ needs.git-tag.outputs.tag_name }}.zip
-          
-    # - name: Release
-    #   if: github.ref_type == 'tag'
-    #   uses: ncipollo/release-action@v1
-    #   with:
-    #     allowUpdates: true
-    #     generateReleaseNotes: true
-    #     artifacts: |
-    #       sdl2_tests-${{ needs.git-tag.outputs.tag_name }}.zip
     
