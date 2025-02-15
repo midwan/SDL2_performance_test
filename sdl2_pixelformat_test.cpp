@@ -155,8 +155,8 @@ int main( int argc, char** argv )
                     << std::endl;
                 start = end;
                 frames = 0;
+                test++;
             }
-            test++;
         }
 
         SDL_DestroyTexture(texture);
