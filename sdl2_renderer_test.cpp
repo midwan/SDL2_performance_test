@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <stdbool.h>
+#include <cstdio>
 #include <sys/time.h>
 
 #include <SDL.h>
@@ -11,12 +9,6 @@ SDL_Renderer *renderer;
 SDL_Texture* texture;
 
 SDL_Texture *WID_loadTexture( SDL_Renderer *renderer, char *name);
-
-uint64_t getTimeStamp() {
-	struct timeval tv;
-	gettimeofday(&tv,NULL);
-	return tv.tv_sec * 1000000 + tv.tv_usec;
-}
 
 int main(int argc, char** argv)
 {
@@ -62,33 +54,33 @@ int main(int argc, char** argv)
 
 			SDL_Rect clip = {0,0,200,200};
 
-			int t1, t2;
+			Uint64 start, end;
 
-			t1 = getTimeStamp();
+			start = SDL_GetPerformanceCounter();
 			SDL_RenderCopy(renderer, texture, NULL, &clip);
-			t2 = getTimeStamp();
-			printf("RenderCopy 200x100 : %d\n", (t2-t1));
+			end = SDL_GetPerformanceCounter();
+			printf("RenderCopy 200x100 : %lu\n", (end-start));
 
-			usleep(20000);
+			SDL_Delay(20);
 			
-			t1 = getTimeStamp();
+			start = SDL_GetPerformanceCounter();
 			SDL_RenderPresent(renderer);
-			t2 = getTimeStamp();
-			printf("RenderPresent : %d\n", (t2 - t1));
+			end = SDL_GetPerformanceCounter();
+			printf("RenderPresent : %lu\n", (end-start));
 
-			usleep(20000);
+			SDL_Delay(20);
 			
-			t1 = getTimeStamp();
+			start = SDL_GetPerformanceCounter();
 			SDL_RenderCopy(renderer, texture, NULL, NULL);
-			t2 = getTimeStamp();
-			printf("RenderCopy 800x600 : %d\n", (t2-t1));
+			end = SDL_GetPerformanceCounter();
+			printf("RenderCopy 800x600 : %lu\n", (end-start));
 
-			usleep(20000);
+			SDL_Delay(20);
 			
-			t1 = getTimeStamp();
+			start = SDL_GetPerformanceCounter();
 			SDL_RenderPresent(renderer);
-			t2 = getTimeStamp();
-			printf("RenderPresent : %d\n", (t2 - t1));
+			end = SDL_GetPerformanceCounter();
+			printf("RenderPresent : %lu\n", (end-start));
 
 			bool loop = true;
 			while ( loop )
@@ -139,7 +131,7 @@ SDL_Texture *WID_loadTexture( SDL_Renderer *renderer, char *name)
 
 	if (surface == NULL)
 	{
-		fprintf(stderr, "error loading : %s", name);
+		fprintf(stderr, "error loading : %s\n", name);
 	}
 	else
 	{
