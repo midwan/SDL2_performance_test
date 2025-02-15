@@ -65,6 +65,17 @@ int main( int argc, char** argv )
     for (Uint32 i = 0; i < info.num_texture_formats; i++)
     {
         auto pixelFormat = info.texture_formats[i];
+        if (pixelFormat == SDL_PIXELFORMAT_UNKNOWN
+            || pixelFormat ==  SDL_PIXELFORMAT_YV12
+            || pixelFormat ==  SDL_PIXELFORMAT_IYUV
+            || pixelFormat ==  SDL_PIXELFORMAT_NV12
+            || pixelFormat ==  SDL_PIXELFORMAT_NV21
+            || pixelFormat ==  SDL_PIXELFORMAT_EXTERNAL_OES)
+        {
+            // we skip these formats
+            continue;
+        }
+
         std::cout << "Testing Pixel format: " << SDL_GetPixelFormatName(pixelFormat) << std::endl;
 
         SDL_Texture* texture = SDL_CreateTexture(
