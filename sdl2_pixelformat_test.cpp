@@ -82,7 +82,7 @@ int main( int argc, char** argv )
         Uint64 start = SDL_GetPerformanceCounter();
 
         std::cout << "Using " << (useLocktexture ? "SDL_LockTexture() + memcpy()" : "SDL_UpdateTexture()") << std::endl;
-
+        int test = 0;
         while (running && test < loops)
         {
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
